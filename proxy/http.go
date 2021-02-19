@@ -39,7 +39,7 @@ func NewHTTPProxyWithHTTPExecutor(remote *config.Backend, re client.HTTPRequestE
 
 	ef := NewEntityFormatter(remote)
 	rp := DefaultHTTPResponseParserFactory(HTTPResponseParserConfig{dec, ef})
-	return NewHTTPProxyDetailed(remote, re, client.GetHTTPStatusHandler(remote), rp)
+	return NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler/*client.GetHTTPStatusHandler(remote)*/, rp)
 }
 
 // NewHTTPProxyDetailed creates a http proxy with the injected configuration, HTTPRequestExecutor,
