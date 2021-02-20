@@ -71,8 +71,18 @@ func negotiatedRender(c *gin.Context, response *proxy.Response) {
 	}
 }
 
+func getStatus(c *gin.Context, response *proxy.Response) int{
+	if response == nil {
+		return c.Writer.Status()
+	}
+	if response.Metadata.StatusCode < 200 {
+		return c.Writer.Status()
+	}
+	return response.Metadata.StatusCode
+}
+
 func stringRender(c *gin.Context, response *proxy.Response) {
-	status := c.Writer.Status()
+	status := getStatus(c, response)
 
 	if response == nil {
 		c.String(status, "")
@@ -92,7 +102,7 @@ func stringRender(c *gin.Context, response *proxy.Response) {
 }
 
 func jsonRender(c *gin.Context, response *proxy.Response) {
-	status := c.Writer.Status()
+	status := getStatus(c, response)
 	if response == nil {
 		c.JSON(status, emptyResponse)
 		return
