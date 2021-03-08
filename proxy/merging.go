@@ -192,6 +192,10 @@ func newIncrementalMergeAccumulator(total int, combiner ResponseCombiner) *incre
 
 func (i *incrementalMergeAccumulator) Merge(res *Response, err error) {
 	i.pending--
+	if err == ErrIgnoreResult {
+		return
+	}
+
 	if err != nil {
 		i.errs = append(i.errs, err)
 		if i.data != nil {
