@@ -258,6 +258,11 @@ type mergeError struct {
 	errs []error
 }
 
+//any error should be 500?
+func (m mergeError) StatusCode() int{
+	return 500
+}
+
 func (m mergeError) Error() string {
 	msg := make([]string, len(m.errs))
 	for i, err := range m.errs {
