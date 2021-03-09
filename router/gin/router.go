@@ -128,12 +128,14 @@ func (r ginRouter) registerKrakendEndpoints(rg *gin.RouterGroup, endpoints []*co
 func (r ginRouter) registerKrakendEndpoint(rg *gin.RouterGroup, method string, e *config.EndpointConfig, h gin.HandlerFunc, total int) {
 	method = strings.ToTitle(method)
 	path := e.Endpoint
-	if method != http.MethodGet && total > 1 {
-		if !router.IsValidSequentialEndpoint(e) {
-			r.cfg.Logger.Error(method, " endpoints with sequential enabled is only the last one is allowed to be non GET! Ignoring", path)
-			return
-		}
-	}
+
+	//for posting multiple backends with ErrIgnoreResult
+	//if method != http.MethodGet && totBackends > 1 {
+	//	if !router.IsValidSequentialEndpoint(endpoint) {
+	//		r.cfg.Logger.Error(method, " endpoints with sequential enabled is only the last one is allowed to be non GET! Ignoring", path)
+	//		return
+	//	}
+	//}
 
 	switch method {
 	case http.MethodGet:
