@@ -51,7 +51,21 @@ func NewConcurrentMiddleware(remote *config.Backend) Middleware {
 }
 
 var errNullResult = errors.New("invalid response")
-var ErrIgnoreResult = errors.New("ignore response")
+type ErrIgnoreResult struct{
+	responseError
+}
+
+func (*ErrIgnoreResult) Error() string{
+	return "ignore response"
+}
+
+func (*ErrIgnoreResult) Name() string{
+	return "Ignore"
+}
+
+func (*ErrIgnoreResult)StatusCode() int{
+	return 409
+}
 
 func processConcurrentCall(ctx context.Context, next Proxy, request *Request, out chan<- *Response, failed chan<- error) {
 	localCtx, cancel := context.WithCancel(ctx)
